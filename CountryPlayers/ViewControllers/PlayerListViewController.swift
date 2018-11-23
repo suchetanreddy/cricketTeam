@@ -204,7 +204,6 @@ extension PlayerListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            guard let managedObjectContext = managedObjectContext else { return }
             // Fetch palyer
             let player = fetchedResultsController.object(at: indexPath)
             // Delete palyer
