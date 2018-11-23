@@ -210,7 +210,7 @@ extension PlayerListViewController: UITableViewDataSource {
             // Delete palyer
             player.managedObjectContext?.delete(player)
             do {
-                try managedObjectContext.save()
+                try player.managedObjectContext?.save()
             } catch {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
