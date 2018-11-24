@@ -54,6 +54,10 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="m0x-Gv-npA"/>
                                 </connections>
                             </tableView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Nwf-og-7xT">
+                                <rect key="frame" x="177" y="324" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -66,6 +70,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="LzJ-X2-fCw"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="Nwf-og-7xT" id="CgU-6k-rM5"/>
                         <outlet property="countriesTableView" destination="6d7-X4-9jE" id="IhW-mH-Fmz"/>
                     </connections>
                 </viewController>
@@ -136,6 +141,11 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Players" id="vzj-7A-lFg">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="fBg-iv-7fn">
+                            <connections>
+                                <action selector="backButtonTapped:" destination="s5v-eV-AX3" id="T8I-DK-V5J"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="8K8-Jf-7d0">
                             <connections>
                                 <segue destination="7FN-h7-6xA" kind="show" identifier="addPlayerSegue" id="Dla-da-hAq"/>
@@ -204,6 +214,11 @@
                         <viewLayoutGuide key="safeArea" id="eDR-8Z-f2A"/>
                     </view>
                     <navigationItem key="navigationItem" id="HlG-JC-hsc">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="YPJ-Xt-4gu">
+                            <connections>
+                                <action selector="backButtonTapped:" destination="7FN-h7-6xA" id="pr4-Jr-6QZ"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="CAB-k2-m4w">
                             <connections>
                                 <action selector="saveButtonTapped:" destination="7FN-h7-6xA" id="Ds9-fr-bh9"/>

@@ -13,6 +13,7 @@ class PlayerListViewController: UIViewController {
     private let addPlayerSegue = "addPlayerSegue"
     private let editPlayerSegue = "editPlayerSegue"
     var countryID : String?
+    var countryName : String?
     var managedObjectContext: NSManagedObjectContext?
     private let persistentContainer = NSPersistentContainer(name: "country")
     fileprivate lazy var fetchedResultsController: NSFetchedResultsController<Players> = {
@@ -39,7 +40,7 @@ class PlayerListViewController: UIViewController {
     // MARK: - View controller Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.title = countryName
         // Do any additional setup after loading the view.
         persistentContainer.loadPersistentStores { (persistentStoreDescription, error) in
             if let error = error {
@@ -84,20 +85,16 @@ class PlayerListViewController: UIViewController {
     // MARK: - View Methods
     private func setupView() {
         setupMessageLabel()
-        
         updateView()
     }
     fileprivate func updateView() {
         var hasQuotes = false
-        
         if let quotes = fetchedResultsController.fetchedObjects {
             hasQuotes = quotes.count > 0
         }
-        
-        playersTableView.isHidden = !hasQuotes
-        messageLabel.isHidden = hasQuotes
-        
-//        activityIndicatorView.stopAnimating()
+        self.playersTableView.tableFooterView = UIView()
+        self.playersTableView.isHidden = !hasQuotes
+        self.messageLabel.isHidden = hasQuotes
     }
     private func setupMessageLabel() {
         messageLabel.text = "You don't have any player yet."
@@ -112,6 +109,10 @@ class PlayerListViewController: UIViewController {
             print("Unable to Save Changes")
             print("\(error), \(error.localizedDescription)")
         }
+    }
+    // MARK: - Button IBAction methods
+    @IBAction func backButtonTapped(_ sender: UIBarButtonItem) {
+        navigationController?.popViewController(animated: true)
     }
 }
 extension PlayerListViewController : NSFetchedResultsControllerDelegate{

@@ -35,28 +35,38 @@ class AddNewPlayerViewController: UIViewController,UITextFieldDelegate {
     }
     // MARK: - Button IBAction methods
     @IBAction func saveButtonTapped(_ sender: UIBarButtonItem) {
-        guard let managedObjectContext = managedObjectContext else { return }
-        
-        if player == nil {
-            // Create player
-            let newplayer = Players(context: managedObjectContext)
-            // Set player
-            player = newplayer
+        if (playerNameTextField.text?.isEmpty)!{
+            let alert = UIAlertController(title: "Alert", message: "Please enter player name", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }else{
+            guard let managedObjectContext = managedObjectContext else { return }
+            
+            if player == nil {
+                // Create player
+                let newplayer = Players(context: managedObjectContext)
+                // Set player
+                player = newplayer
+            }
+            
+            if let player = player {
+                // Configure player
+                player.playerName = playerNameTextField.text
+                player.countryID = countryID
+            }
+            do {
+                try managedObjectContext.save()
+            } catch {
+                let nserror = error as NSError
+                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
+            }
+            // Pop View Controller
+            _ = navigationController?.popViewController(animated: true)
         }
-        
-        if let player = player {
-            // Configure player
-            player.playerName = playerNameTextField.text
-            player.countryID = countryID
-        }
-        do {
-            try managedObjectContext.save()
-        } catch {
-            let nserror = error as NSError
-            fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-        }
-        // Pop View Controller
-        _ = navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func backButtonTapped(_ sender: UIBarButtonItem) {
+        navigationController?.popViewController(animated: true)
     }
     // MARK: - UITextField Delegate Method
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

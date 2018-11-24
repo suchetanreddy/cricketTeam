@@ -13,7 +13,7 @@ import CoreData
 class ViewController: UIViewController,NSFetchedResultsControllerDelegate {
     // MARK: - IBOutlet's
     @IBOutlet weak var countriesTableView: UITableView!
-    
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
     // MARK: - Properties
     let playerListSegue = "playerListSegue"
     var countryListObj = [countryList]()
@@ -71,9 +71,11 @@ class ViewController: UIViewController,NSFetchedResultsControllerDelegate {
             // Configure View Controller
             destinationViewController.managedObjectContext = persistentContainer.viewContext
             if !hascountries{
-                    destinationViewController.countryID = self.countryListObj[indexPath.row].id
+                destinationViewController.countryID = self.countryListObj[indexPath.row].id
+                destinationViewController.countryName = self.countryListObj[indexPath.row].name
             }else{
                 destinationViewController.countryID = fetchedResultsController.object(at: indexPath).id
+                destinationViewController.countryName = fetchedResultsController.object(at: indexPath).name
             }
         }
     }
@@ -82,13 +84,15 @@ class ViewController: UIViewController,NSFetchedResultsControllerDelegate {
         if let countries = fetchedResultsController.fetchedObjects {
             hascountries = countries.count > 0
         }
+        self.countriesTableView.tableFooterView = UIView()
         if !hascountries{
             self.getCountryListDetails()
         }
-//        activityIndicatorView.stopAnimating()
+        
     }
     // MARK: - Network Calls
     func getCountryListDetails(){
+        self.activityIndicator.startAnimating()
         Alamofire.request(crickertCountryURL, method: .get).responseJSON { response in
             if response.result.isFailure {
                 return
@@ -116,7 +120,10 @@ class ViewController: UIViewController,NSFetchedResultsControllerDelegate {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
-            self.countriesTableView.reloadData()
+            DispatchQueue.main.async {
+                self.activityIndicator.stopAnimating()
+                self.countriesTableView.reloadData()
+            }
         }
     }
 
